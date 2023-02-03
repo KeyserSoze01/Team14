@@ -2,7 +2,7 @@
 Intro to SE
 Justin Pettiss/KeyserSoze01 (Team Lead)
 Milton Lewis Jr
-Tony
+Tony Ruiz
 Daniel Shelby/Daniel-S-Shelby
 
 Written in Python and Django
