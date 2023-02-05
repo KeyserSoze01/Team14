@@ -1,21 +1,280 @@
 3. System Features
 
-<This template illustrates organizing the functional requirements for the product by system features, the major services provided by the product. You may prefer to organize this section by use case, mode of operation, user class, object class, functional hierarchy, or combinations of these, whatever makes the most logical sense for your product.>
+This section of this e-commerce web application SRS outlines the key functionalities and capabilities of the system. This section provides a comprehensive description of the user experience, including how users
+will interact with the system to browse, search, and purchase books. Additionally, the system will provide robust analytics and reporting capabilities for administrators, allowing them to monitor and analyze customer
+behavior, sales trends, and other key metrics.
 
-3.1 System Feature 1
+The prioritization listed here are a general guideline and can be adjusted to meet the specific needs of this project.
 
-<Don’t really say “System Feature 1.” State the feature name in just a few words.>
-4.1.1	Description and Priority
-<Provide a short description of the feature and indicate whether it is of High, Medium, or Low priority. You could also include specific priority component ratings, such as benefit, penalty, cost, and risk (each rated on a relative scale from a low of 1 to a high of 9).>
-4.1.2	Stimulus/Response Sequences
-<List the sequences of user actions and system responses that stimulate the behavior defined for this feature. These will correspond to the dialog elements associated with use cases.>
-4.1.3	Functional Requirements
-<Itemize the detailed functional requirements associated with this feature. These are the software capabilities that must be present in order for the user to carry out the services provided by the feature, or to execute the use case. Include how the product should respond to anticipated error conditions or invalid inputs. Requirements should be concise, complete, unambiguous, verifiable, and necessary. Use “TBD” as a placeholder to indicate when necessary information is not yet available.>
+3.1 User authentication and authorization
 
-<Each requirement should be uniquely identified with a sequence number or a meaningful tag of some kind.>
+    3.1.1	Description and Priority
+        Allows users to create an account, log in, and access their information securely. High priority and high risk if not done correctly.
 
-REQ-1:	
-REQ-2:
+    3.1.2	Stimulus/Response Sequences
+        Stimulus: A user attempts to log in to the e-commerce web application.
+        Response:
+            a. The system prompts the user to enter their username and password.
+            b. The system verifies the user's credentials against the database.
+            c. If the credentials are valid, the system grants the user access to the site and displays the user's dashboard.
+            d. If the credentials are invalid, the system displays an error message and prompts the user to try again.
+            e. The system logs all login attempts for security and auditing purposes.
 
-3.2 System Feature 2 (and so on)
+    3.1.3	Functional Requirements
+        FR-3.1.1 - User registration: Users should be able to create a new account by providing a unique username, password, and basic personal information such as their name, email address, and billing information.
+        FR-3.1.2 - User login: Users should be able to log in to the system using their username and password.
+        FR-3.1.3 - Password management: Users should be able to reset their password if they forget it.
+        FR-3.1.4 - User profiles: The system should maintain a user profile for each registered user, including their personal information and billing information.
+        FR-3.1.5 - Session management: The system should keep track of each user's session and automatically log them out after a specified period of inactivity.
+        FR-3.1.6 - Authorization: The system should only allow users to access protected resources and sensitive information if they are authorized to do so.
+        FR-3.1.7 - Role-based access control: The system should support role-based access control, allowing administrators to control which users have access to which resources and functionalities.
+        FR-3.1.8 - Security: The system should implement robust security measures to protect user information and prevent unauthorized access, such as encryption and secure socket layer (SSL) certificates.
+        FR-3.1.9 - Logging: The system should log all user authentication and authorization events for security and auditing purposes.
+
+3.2 Shopping cart and checkout
+
+    3.2.1 Description and Priority
+        Allows users to add books to their cart and purchase them using a secure payment gateway. Similar to 3.1, this has high priority and high risk during payment.
+
+    3.2.2 Stimulus/Response Sequences
+        Stimulus:
+            1. A customer selects a book to purchase and clicks the "Add to Cart" button. 
+            2. The customer clicks the "Checkout" button.
+        Response:
+            1. 
+            a. The system adds the selected book to the customer's shopping cart.
+            b. The system displays a confirmation message to the customer, indicating that the book has been added to their cart.
+            c. The customer can continue shopping and adding books to their cart, or proceed to the checkout process.
+
+            2. 
+            a. The system displays the customer's shopping cart and the total cost of their purchase.
+            b. The customer is prompted to enter their billing and shipping information.
+            c. The customer is prompted to select a payment method, such as credit card or PayPal.
+            d. The customer is prompted to review their order and confirm their purchase.
+            e. The system validates the customer's billing and shipping information, as well as their payment information.
+            f. If all information is valid, the system processes the payment and confirms the purchase.
+            g. The system displays an order confirmation page to the customer, including a summary of their purchase and the estimated delivery date.
+
+    3.2.3 Functional Requirements
+        FR-3.2.1 - Add to cart: Customers should be able to add books to their shopping cart by clicking the "Add to Cart" button.
+        FR-3.2.2 - Shopping cart: The system should maintain a shopping cart for each customer, allowing them to view the books they have selected and the total cost of their purchase.
+        FR-3.2.3 - Update cart: Customers should be able to update the quantity of books in their shopping cart.
+        FR-3.2.4 - Checkout process: Customers should be able to initiate the checkout process by clicking the "Checkout" button.
+        FR-3.2.5 - Billing and shipping information: The system should prompt customers to enter their billing and shipping information during the checkout process.
+        FR-3.2.6 - Payment methods: The system should support multiple payment methods, such as credit card or PayPal, and allow customers to select a payment method during the checkout process.
+        FR-3.2.7 - Order review and confirmation: The system should provide customers with the opportunity to review their order and confirm their purchase before processing payment.
+        FR-3.2.8 - Payment processing: The system should process payments securely and confirm purchases if all information is valid.
+        FR-3.2.9 - Order confirmation: The system should display an order confirmation page to customers after a successful purchase, including a summary of their purchase and the estimated delivery date.
+        FR-3.2.10 - Order history: The system should maintain an order history for each customer, allowing them to view their past purchases.
+
+
+3.3 Book catalog and search
+
+    3.2.1 Description and Priority
+        Allows users to browse and search for books, view details, and purchase or sell books. Although the priority to have this done is high, the security risk is medium/low.
+
+    3.2.2 Stimulus/Response Sequences
+        Stimulus: 
+            1. A customer opens the web application and wants to search for a book.
+            2. The customer selects a book to view more information.
+        Response:
+            1. 
+            a. The system displays a search bar where the customer can enter a book title, author, ISBN, or other relevant search criteria.
+            b. The customer enters a search term and clicks the "Search" button.
+            c. The system performs a search of its book catalog, using the criteria entered by the customer.
+            d. The system displays a list of books that match the customer's search criteria.
+            e. The customer can browse the list of books and select one to view more information
+
+            2.
+            a. The system displays a page with detailed information about the selected book, including the cover image, title, author, publisher, ISBN, description, and price.
+            b. The customer can read the book description, view the cover image, and check the availability of the book.
+            c. The customer can add the book to their shopping cart or continue browsing.
+
+    3.2.3 Functional Requirements
+        FR-3.3.1 - Search bar: The system should provide a search bar that allows customers to enter search criteria, such as a book title, author, ISBN, or keyword.
+        FR-3.3.2 - Search results: The system should perform a search of its book catalog using the criteria entered by the customer and display a list of books that match the customer's search criteria.
+        FR-3.3.3 - Book details: The system should provide detailed information about each book in the search results, including the cover image, title, author, publisher, ISBN, description, and price.
+        FR-3.3.4 - Book availability: The system should indicate the availability of each book in the search results, so customers know whether a book can be purchased.
+        FR-3.3.5 - Book description: The system should provide a detailed description of each book, so customers can learn more about the book's content and decide whether they are interested in purchasing it.
+        FR-3.3.6 - Add to cart: Customers should be able to add a book to their shopping cart from the book details page.
+        FR-3.3.7 - Browse books: Customers should be able to browse the search results and view details about each book.
+        FR-3.3.8 - Refine search: Customers should be able to refine their search results by specifying additional search criteria or sorting the results.
+        FR-3.3.9 - Recent searches: The system should maintain a history of recent searches for each customer, so they can easily repeat a search they have performed in the past.
+        FR-3.3.10 - Suggestions: The system should provide suggestions to customers based on their search history, popular books, and other relevant criteria to help them find books they are interested in. But this feature can be tricky and involved ML/AI.
+
+
+3.4 Book preview and reading
+
+    3.4.1 Description and Priority
+        Allows users to preview books and read books within the web application. The priority is medium and the risk is medium. Previewing the book should not able too many pages to the reader.
+
+    3.4.2 Stimulus/Response Sequences
+        Stimulus: A customer wants to preview a book to decide if they want to purchase it.
+        Response:
+            a. The customer navigates to the book's detail page on the web application.
+            b. The system displays a preview of the book, which includes a portion of the book's content, such as the introduction or a few chapters.
+            c. The customer can navigate through the preview using a page navigation system or a table of contents.
+            d. The customer can search within the preview for specific keywords or phrases.
+            e. The customer can view the book's cover, title, author, and other information while previewing the book.
+
+    3.4.3 Functional Requirements
+        FR-3.4.1 - Display a preview of the book's content: The system should display a portion of the book's content in a preview window, accessible from the book's detail page.
+        FR-3.4.2 - Page navigation and table of contents: The customer should be able to navigate through the preview using a page navigation system or a table of contents.
+        FR-3.4.3 - Search within preview: The customer should be able to search within the preview for specific keywords or phrases.
+        FR-3.4.4 - Display book information while previewing: The customer should be able to view the book's cover, title, author, and other information while previewing the book.
+        FR-3.4.5 - Save customer's position: The system should save the customer's current position in the preview, so they can pick up where they left off when they return.
+        FR-3.4.6 - Access preview from account: The customer should be able to access the preview from their account on the web application and continue reading from the saved position.
+
+
+3.5 Book ratings and reviews
+
+    3.5.1 Description and Priority
+        Allows users to rate and review books and see the ratings and reviews from other users. The priority and risk are medium because while they are important for the user experience and can impact book sales, 
+        they are not necessarily essential for the core functionality of the e-commerce web app.
+
+    3.5.2 Stimulus/Response Sequences
+        Stimulus: A customer wants to rate and review a book they have purchased.
+        Response: 
+            a. The customer navigates to the book's detail page on the web application.
+            b. The system displays the option for the customer to leave a rating and review for the book.
+            c. The customer selects the number of stars they want to give the book as a rating.
+            d. The customer enters a written review of the book.
+            e. The customer submits their rating and review.
+
+
+    3.5.3 Functional Requirements
+        FR-3.5.1 - Allow customers to rate books: Customers should be able to rate a book on a scale of 1-5 stars.
+        FR-3.5.2 - Allow customers to write reviews: Customers should be able to write a review of a book, including a title and text body.
+        FR-3.5.3 - Display book ratings: The system should display the average rating for a book based on customer ratings.
+        FR-3.5.4 - Display customer reviews: The system should display a list of customer reviews for a book, including the customer's username and the date the review was submitted.
+        FR-3.5.5 - Sort reviews: The system should allow customers to sort the reviews by date, rating, or relevance.
+        FR-3.5.6 - Review moderation: The system should have a moderation system to ensure that all reviews adhere to the web application's review guidelines.
+        FR-3.5.7 - Customer account association: The system should associate each rating and review with the customer's account on the web application.
+        FR-3.5.8 - Edit and delete reviews: Customers should be able to edit or delete their own reviews, if allowed by the web application's review guidelines.
+
+
+3.6 Book management
+
+    3.6.1 Description and Priority
+        Allows users to manage their library of purchased books, view their reading progress, and download or store books for offline reading. Medium priority and medium risk.
+
+    3.6.2 Stimulus/Response Sequences
+        Stimulus: An administrator wants to add/edit/delete a new book to the web application.
+        Response: 
+            a. The administrator logs into the admin panel.
+            b. The system displays the option to add/edit/delete a new book.
+            c. The administrator enters the book's details, including the title, author, description, cover image, and price.
+            d. The administrator uploads the book's cover image and the book's file.
+            e. The administrator submits/edit the new book.
+
+
+    3.6.3 Functional Requirements
+        FR-3.6.1 - Add new books: The system should allow administrators to add new books to the web application by entering the book's details, including the title, author, description, cover image, and price.
+        FR-3.6.2 - Edit existing books: The system should allow administrators to edit the details of an existing book on the web application.
+        FR-3.6.3 - Delete books: The system should allow administrators to delete a book from the web application.
+        FR-3.6.4 - Book cover image upload: The system should allow administrators to upload a cover image for each book.
+        FR-3.6.5 - Book file upload: The system should allow administrators to upload the book's file.
+        FR-3.6.6 - Book information display: The system should display the book's information, including the title, author, description, cover image, and price.
+        FR-3.6.7 - Search for books: The system should provide a search functionality that allows administrators to search for books based on their title, author, or description.
+        FR-3.6.8 - Book list display: The system should display a list of all books available on the web application.
+        FR-3.6.9 - Book details display: The system should display the details of a book, including the title, author, description, cover image, and price, when a book is selected.
+        FR-3.6.10 -Confirmation prompts: The system should display confirmation prompts to ensure administrators want to perform actions such as adding a new book, editing a book, or deleting a book.
+
+
+3.7 User profile management
+
+    3.7.1 Description and Priority
+        Allows users to manage their personal information, preferences, and payment methods. This is medium priority and risk.
+
+    3.7.2 Stimulus/Response Sequences
+        Stimulus: A user wants to view/edit their profile information.
+        Response:
+            a. The user logs into their account.
+            b. The system displays the user's profile information.
+            c. The user selects the option to edit their profile information.
+            d. The system displays the fields that the user can edit, such as their name and email address.
+            e. The user makes the desired changes to their profile information.
+            f. The user submits the changes.
+
+    3.7.3 Functional Requirements
+        FR-3.7.1 - User account creation: The system should allow users to create an account by providing their name, email address, and password.
+        FR-3.7.2 - User login: The system should allow users to log into their account using their email address and password.
+        FR-3.7.3 - User profile display: The system should display the user's profile information, including their name, email address, and any other details they have provided.
+        FR-3.7.4 - User profile edit: The system should allow users to edit their profile information, such as their name and email address.
+        FR-3.7.5 - Password change: The system should allow users to change their password.
+        FR-3.7.6 - Session management: The system should keep track of the user's session and log them out after a certain period of inactivity.
+        FR-3.7.7 - Security: The system should store passwords securely and implement measures to prevent unauthorized access to user data.
+        FR-3.7.8 - Error handling: The system should handle errors in a user-friendly manner, such as displaying error messages when incorrect information is entered during login or profile edit.
+
+
+3.8 Social features
+
+    3.8.1 Description and Priority
+        Allows users to share books, recommend books to friends, and connect with other readers. This is low priority and will be implemented if time permits.
+
+    3.8.2 Stimulus/Response Sequences
+        Stimulus: A user wants to share a book with their followers.
+        Response: 
+            a. The user logs into their account.
+            b. The user navigates to the page for the book they want to share.
+            c. The user selects the option to share the book with their followers.
+            d. The system displays a form for the user to write a message to accompany the book share.
+            e. The user writes a message and selects the option to share the book.
+            f. The system confirms that the book has been shared with the user's followers.
+
+    3.8.3 Functional Requirements
+        FR-3.8.1 - User follow: The system should allow users to follow other users and view a list of users they are following.
+        FR-3.8.2 - Book sharing: The system should allow users to share books with their followers and view a list of books shared by other users.
+        FR-3.8.3 - Message sharing: The system should allow users to write a message to accompany a book share.
+        FR-3.8.4 - Notifications: The system should notify a user when another user shares a book with them.
+        FR-3.8.5 - Privacy: The system should allow users to control who can see their book shares and who they are following.
+        FR-3.8.6 - User blocking: The system should allow users to block other users if they do not want to receive book shares or follow their activity.
+        FR-3.8.7 - User search: The system should allow users to search for other users by name or email address.
+        FR-3.8.8 - Social activity feed: The system should display a feed of book shares and other social activity for users to view.
+
+
+3.9 Admin panel
+
+    3.9.1 Description and Priority
+        Allows administrators to manage the web application, including managing books, users, and payment transactions. Low priority and risk because it is primarily used by administrative staff and is not a direct part of the user experience.
+
+    3.9.2 Stimulus/Response Sequences
+        Stimulus: An administrator wants to view a list of users.
+        Response:
+            a. The administrator logs into the admin panel.
+            b. The administrator selects the option to view a list of users.
+            c. The system displays a list of all users, including their names, email addresses, and account information.
+
+    3.9.3 Functional Requirements
+        FR-3.9.1 - User management: The system should allow administrators to view, add, edit, and delete users.
+        FR-3.9.2 - Book management: The system should allow administrators to view, add, edit, and delete books.
+        FR-3.9.3 - Order management: The system should allow administrators to view and manage orders placed by users.
+        FR-3.9.4 - Reporting: The system should provide administrators with reports on sales, user activity, and other relevant information.
+        FR-3.9.5 - User permissions: The system should allow administrators to assign permissions to users, such as the ability to access the admin panel.
+        FR-3.9.6 - Login management: The system should allow administrators to manage the login information for users, including passwords and security questions.
+        FR-3.9.7 - User activity tracking: The system should provide administrators with information on user activity, such as book purchases and social activity.
+        FR-3.9.8 - Site configuration: The system should allow administrators to configure the site, including changing the appearance, setting up payment methods, and managing shipping options.
+        FR-3.9.9 - System backups: The system should allow administrators to create and manage backups of the system data.
+        FR-3.9.10 - Support management: The system should allow administrators to manage support requests from users.
+
+
+3.10 Analytics and reporting
+
+    3.10.1 Description and Priority
+        Allows administrators to monitor and analyze user behavior, sales trends, and other metrics.
+
+    3.10.2 Stimulus/Response Sequences
+        Stimulus: Request for reports: A user requests reports on sales
+        Response:
+            a. System generates report: The system generates a report based on the user's request, pulling data from the database and processing it as necessary.
+            b. Report presentation: The report is presented to the user in a clear and accessible format, such as a chart, table, or graph.
+            c. User generates new report: The user can generate a new report based on different criteria or parameters.
+
+    3.10.3 Functional Requirements
+        FR-3.10.1 - Data collection: The system should collect data on sales, user activity, and other relevant information.
+        FR-3.10.2 - Data processing: The system should process the data as necessary to generate reports.
+        FR-3.10.3 - Report generation: The system should allow users to generate reports on sales, user activity, and other relevant information.
+        FR-3.10.4 - Report customization: The system should allow users to customize reports, such as by selecting specific data ranges or criteria.
+        FR-3.10.5 - Report export: The system should allow users to export reports to spreadsheet or other formats.
+        FR-3.10.6 - User access: The system should restrict access to reports to authorized users only.
 
