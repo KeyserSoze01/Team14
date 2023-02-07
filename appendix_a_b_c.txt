@@ -1,0 +1,62 @@
+Appendix A: Glossary
+
+Acronyms and Abbreviations:
+
+SRS: System Requirements Specification
+UI: User Interface
+API: Application Programming Interface
+SQL: Structured Query Language
+CSS: Cascading Style Sheets
+HTML: HyperText Markup Language
+JS: JavaScript
+Definitions:
+
+E-commerce Web App: An online platform for buying and selling books.
+User: A person who uses the e-commerce web app to purchase or sell books.
+Book: A digital publication that can be purchased and read through the e-commerce web app.
+User Profile: A personal profile for each user on the e-commerce web app that stores information such as their name, address, and order history.
+Book Preview: A preview of a book that can be viewed before purchasing it.
+Book Ratings and Reviews: Feedback provided by users on the quality and content of a book.
+Book Management: The ability to add, edit, or remove books from the e-commerce web app by an administrator.
+User Profile Management: The ability to edit or delete a user's personal profile by an administrator.
+Social Feature: The ability for users to share information about books with other users on the e-commerce web app.
+Admin Panel: A secure interface for administrators to manage the e-commerce web app, including book management and user profile management.
+Analytics and Reporting: The ability to view and generate reports on the performance and activity of the e-commerce web app.
+
+This glossary provides clear definitions for all the terms used in the SRS, ensuring that everyone involved in the project has a shared understanding of the key concepts.
+
+Appendix B: Analysis Models
+
+1. Data Flow Diagram (DFD)
+    A visual representation of the flow of data through the e-commerce web app, including inputs, processes, and outputs. This helps to understand the system's architecture and data relationships.
+2. Entity-Relationship Diagram (ERD)
+    A diagram that represents the relationships between entities in the e-commerce web app, including books, users, and reviews. This helps to understand the database structure and how data is stored and retrieved.
+3. Class Diagram
+    A diagram that represents the classes and objects in the e-commerce web app and their relationships. This helps to understand the object-oriented design of the system.
+4. State-Transition Diagram
+    A diagram that represents the different states that a book or user can be in and the events that cause transitions between those states. This helps to understand the system's behavior and logic.
+
+The actual models will be produced next
+
+
+
+Appendix C: To Be Determined List
+
+1. Payment gateway integration
+    The specific payment gateway to be used has not yet been determined.
+2. Shipping options
+    The specific shipping options that will be available to users have not yet been determined.
+3. User notification system
+    The method for sending notifications to users (e.g. email, SMS) has not yet been determined.
+4. Book preview functionality
+    The specific method for providing book previews has not yet been determined.
+5. User account management
+    The specific method for managing user accounts has not yet been determined.
+6. Database technology
+    The specific database technology to be used has not yet been determined.
+7. Classes, relations, attributes, etc
+
+
+
+
+
