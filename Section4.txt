@@ -1,0 +1,37 @@
+4.Other Nonfunctional Requirements
+
+4.1 Performance Requirements
+• Web site should function properly on all browsers.
+• User data and website data should take less than 5 seconds to be retrieved.
+• Website should support multiple form of payment
+• Web site must be loaded withing four seconds
+
+4.2 Safety Requirements
+• User data must be encrypted so that only the developers have that information.
+• User must not use previously used login passwords
+
+4.3 Security Requirements
+• System must be able to successfully protect user data and only give access to correct user.
+• System must be protected from varies cyber attack tactics to prevent data theft.
+• Website must support correct legal requirements and certificates
+
+4.4 Software Quality Attributes
+
+4.4.1 Flexibility
+• Website should support both windows users and Mac IOS users.
+• Website should be able to support multiple browsers
+
+4.4.2 Dependability
+• System should be able to perform normal task without interruption or data lose.
+• System should be able to support 1000’s of user traffic without out slower performance.
+
+4.4.3 Usability
+• System must be simple to navigate interfaces.
+• System must have purposeful features to help user.
+
+4.4.4 Availability
+• Website must be available for usage every day except for maintenance days or emergency patching.
+
+Other Requirements
+
+Database requirements
