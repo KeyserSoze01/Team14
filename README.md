@@ -5,7 +5,7 @@ Introduction to Software Engineering
 <ul>
   <li>Justin Pettiss - Leader - jp2973@msstate.edu </li>
   <li>Milton Lewis Jr - Member - ml1462@msstate.edu </li>
-  <li>Tony Ruiz - Member - truiz1@binghamton.edu </li>
+
   <li>Daniel Shelby - Member - dss320@msstate.edu </li>
 </ul>
 
