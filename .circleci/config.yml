@@ -1,263 +1,351 @@
-<?php
-	$title = "Administration section";
-	require_once "./template/header.php";
-?>
-
-	<form class="form-horizontal" method="post" action="admin_verify.php">
-		<div class="form-group">
-			<label for="name" class="control-label col-md-4">Name</label>
-			<div class="col-md-4">
-				<input type="text" name="name" class="form-control">
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="pass" class="control-label col-md-4">Pass</label>
-			<div class="col-md-4">
-				<input type="password" name="pass" class="form-control">
-			</div>
-		</div>
-		<input type="submit" name="submit" class="btn btn-primary">
-	</form>
-
-<?php
-	require_once "./template/footer.php";
-?>
+{
+    "title": "Administration section",
+    "header": "./template/header.php",
+    "form": {
+        "method": "post",
+        "action": "admin_verify.php",
+        "form-groups": [
+            {
+                "label": {
+                    "for": "name",
+                    "text": "Name"
+                },
+                "input": {
+                    "type": "text",
+                    "name": "name"
+                }
+            },
+            {
+                "label": {
+                    "for": "pass",
+                    "text": "Pass"
+                },
+                "input": {
+                    "type": "password",
+                    "name": "pass"
+                }
+            }
+        ],
+        "submit": {
+            "type": "submit",
+            "name": "submit",
+            "class": "btn btn-primary"
+        }
+    },
+    "footer": "./template/footer.php"
+}
 ##admin_add
-<?php
-	session_start();
-	require_once "./functions/admin.php";
-	$title = "Add new book";
-	require "./template/header.php";
-	require "./functions/database_functions.php";
-	$conn = db_connect();
+{
+    "session_start": true,
+    "require_once": [
+        "./functions/admin.php"
+    ],
+    "title": "Add new book",
+    "require": [
+        "./template/header.php",
+        "./functions/database_functions.php"
+    ],
+    "conn": "db_connect()",
+    "if": {
+        "condition": "isset($_POST['add'])",
+        "code": {
+            "isbn": {
+                "trim": "$_POST['isbn']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$isbn"
+                }
+            },
+            "title": {
+                "trim": "$_POST['title']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$title"
+                }
+            },
+            "author": {
+                "trim": "$_POST['author']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$author"
+                }
+            },
+            "descr": {
+                "trim": "$_POST['descr']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$descr"
+                }
+            },
+            "price": {
+                "floatval_trim": "$_POST['price']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$price"
+                }
+            },
+            "publisher":{
+                "trim":"$_POST['publisher']",
+                "mysqli_real_escape_string":{
+                    "conn":"$conn",
+                    "string":"$publisher"
+                }
+            },
+            // add image
+            "if",:{
+                condition:"isset($_FILES,['image'],), && $_FILES['image']['name'] != ''",
+                code:{
+                    image:"$_FILES,['image'],['name']",
+                    directory_self:"str_replace(basename($_SERVER,['PHP_SELF']), '', $_SERVER['PHP_SELF'])",
+                    uploadDirectory:{
+                        0:"$_SERVER,['DOCUMENT_ROOT'] , $directory_self . 'bootstrap/img/'",
+                        1:"$uploadDirectory .= $image"
+                    },
+                    move_uploaded_file:{
+                        0:"$_FILES,['image'],['tmp_name'],"
+                        1:"$uploadDirectory"
+                    }
+                }
+            }
+        }
+    }
+}
 
-	if(isset($_POST['add'])){
-		$isbn = trim($_POST['isbn']);
-		$isbn = mysqli_real_escape_string($conn, $isbn);
-		
-		$title = trim($_POST['title']);
-		$title = mysqli_real_escape_string($conn, $title);
-
-		$author = trim($_POST['author']);
-		$author = mysqli_real_escape_string($conn, $author);
-		
-		$descr = trim($_POST['descr']);
-		$descr = mysqli_real_escape_string($conn, $descr);
-		
-		$price = floatval(trim($_POST['price']));
-		$price = mysqli_real_escape_string($conn, $price);
-		
-		$publisher = trim($_POST['publisher']);
-		$publisher = mysqli_real_escape_string($conn, $publisher);
-
-		// add image
-		if(isset($_FILES['image']) && $_FILES['image']['name'] != ""){
-			$image = $_FILES['image']['name'];
-			$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']);
-			$uploadDirectory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . "bootstrap/img/";
-			$uploadDirectory .= $image;
-			move_uploaded_file($_FILES['image']['tmp_name'], $uploadDirectory);
-		}
-
-		// find publisher and return pubid
-		// if publisher is not in db, create new
-		$findPub = "SELECT * FROM publisher WHERE publisher_name = '$publisher'";
-		$findResult = mysqli_query($conn, $findPub);
-		if(!$findResult){
-			// insert into publisher table and return id
-			$insertPub = "INSERT INTO publisher(publisher_name) VALUES ('$publisher')";
-			$insertResult = mysqli_query($conn, $insertPub);
-			if(!$insertResult){
-				echo "Can't add new publisher " . mysqli_error($conn);
-				exit;
-			}
-			$publisherid = mysql_insert_id($conn);
-		} else {
-			$row = mysqli_fetch_assoc($findResult);
-			$publisherid = $row['publisherid'];
-		}
-
-
-		$query = "INSERT INTO books VALUES ('" . $isbn . "', '" . $title . "', '" . $author . "', '" . $image . "', '" . $descr . "', '" . $price . "', '" . $publisherid . "')";
-		$result = mysqli_query($conn, $query);
-		if(!$result){
-			echo "Can't add new data " . mysqli_error($conn);
-			exit;
-		} else {
-			header("Location: admin_book.php");
-		}
-	}
-?>
-	<form method="post" action="admin_add.php" enctype="multipart/form-data">
-		<table class="table">
-			<tr>
-				<th>ISBN</th>
-				<td><input type="text" name="isbn"></td>
-			</tr>
-			<tr>
-				<th>Title</th>
-				<td><input type="text" name="title" required></td>
-			</tr>
-			<tr>
-				<th>Author</th>
-				<td><input type="text" name="author" required></td>
-			</tr>
-			<tr>
-				<th>Image</th>
-				<td><input type="file" name="image"></td>
-			</tr>
-			<tr>
-				<th>Description</th>
-				<td><textarea name="descr" cols="40" rows="5"></textarea></td>
-			</tr>
-			<tr>
-				<th>Price</th>
-				<td><input type="text" name="price" required></td>
-			</tr>
-			<tr>
-				<th>Publisher</th>
-				<td><input type="text" name="publisher" required></td>
-			</tr>
-		</table>
-		<input type="submit" name="add" value="Add new book" class="btn btn-primary">
-		<input type="reset" value="cancel" class="btn btn-default">
-	</form>
-	<br/>
-<?php
-	if(isset($conn)) {mysqli_close($conn);}
-	require_once "./template/footer.php";
-?>
+{
+    "form": {
+        "method": "post",
+        "action": "admin_add.php",
+        "enctype": "multipart/form-data",
+        "table": {
+            "tr": [
+                {
+                    "th": "ISBN",
+                    "td": {
+                        "input": {
+                            "type": "text",
+                            "name": "isbn"
+                        }
+                    }
+                },
+                {
+                    "th": "Title",
+                    "td": {
+                        "input": {
+                            "type": "text",
+                            "name": "title",
+                            "required": true
+                        }
+                    }
+                },
+                {
+                    "th": "Author",
+                    "td": {
+                        "input": {
+                            "type": "text",
+                            "name": "author",
+                            "required": true
+                        }
+                    }
+                },
+                {
+                    "th": "Image",
+                    "td": {
+                        "input": {
+                            "type": "file",
+                            "name": "image"
+                        }
+                    }
+                },
+                {
+                    "th": "Description",
+                    "td": {
+                        "textarea":{
+                            name:"descr",
+                            cols:40,
+                            rows:5
+                        }
+                    }
+                },
+                {
+                    th:"Price",
+                    td:{
+                        input:{
+                            type:"text",
+                            name:"price",
+                            required:true
+                        }
+                    }
+                },
+                {
+                    th:"Publisher",
+                    td:{
+                        input:{
+                            type:"text",
+                            name:"publisher",
+                            required:true
+                        }
+                    }
+                }
+            ]
+        },
+        input:[
+            {
+                type:"submit",
+                name:"add",
+                value:"Add new book",
+                class:"btn btn-primary"
+            },
+            {
+                type:"reset",
+                value:"cancel",
+                class:"btn btn-default"
+            }
+        ]
+    },
+    br:true,
+    if:{
+        condition:"isset($conn)",
+        code:"mysqli_close($conn)"
+    },
+    require_once:[
+        "./template/footer.php"
+    ]
+}
 ##admin_book
-<?php
-	session_start();
-	require_once "./functions/admin.php";
-	$title = "List book";
-	require_once "./template/header.php";
-	require_once "./functions/database_functions.php";
-	$conn = db_connect();
-	$result = getAll($conn);
-?>
-	<p class="lead"><a href="admin_add.php">Add new book</a></p>
-	<a href="admin_signout.php" class="btn btn-primary">Sign out!</a>
-	<table class="table" style="margin-top: 20px">
-		<tr>
-			<th>ISBN</th>
-			<th>Title</th>
-			<th>Author</th>
-			<th>Image</th>
-			<th>Description</th>
-			<th>Price</th>
-			<th>Publisher</th>
-			<th>&nbsp;</th>
-			<th>&nbsp;</th>
-		</tr>
-		<?php while($row = mysqli_fetch_assoc($result)){ ?>
-		<tr>
-			<td><?php echo $row['book_isbn']; ?></td>
-			<td><?php echo $row['book_title']; ?></td>
-			<td><?php echo $row['book_author']; ?></td>
-			<td><?php echo $row['book_image']; ?></td>
-			<td><?php echo $row['book_descr']; ?></td>
-			<td><?php echo $row['book_price']; ?></td>
-			<td><?php echo getPubName($conn, $row['publisherid']); ?></td>
-			<td><a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>">Edit</a></td>
-			<td><a href="admin_delete.php?bookisbn=<?php echo $row['book_isbn']; ?>">Delete</a></td>
-		</tr>
-		<?php } ?>
-	</table>
+{
+    "session_start": true,
+    "require_once": [
+        "./functions/admin.php",
+        "./template/header.php",
+        "./functions/database_functions.php"
+    ],
+    "title": "List book",
+    "conn": "db_connect()",
+    "result": "getAll($conn)",
+    "p": {
+        "class": "lead",
+        "a": {
+            "href": "admin_add.php",
+            "text": "Add new book"
+        }
+    },
+    "a": {
+        "href": "admin_signout.php",
+        "class": "btn btn-primary",
+        "text": "Sign out!"
+    },
+    "table": {
+        "class": "table",
+        "style": "margin-top: 20px",
+        "tr": [
+            {
+                "th": [
+                    "ISBN",
+                    "Title",
+                    "Author",
+                    "Image",
+                    "Description",
+                    "Price",
+                    "Publisher",
+                    "&nbsp;",
+                    "&nbsp;"
+                ]
+            },
+            {
+                "<?php while($row = mysqli_fetch_assoc($result)){ ?>": {
+                    "tr": {
+                        0: {
+                            td: "<?php echo $row['book_isbn']; ?>"
+                        },
+                        1: {
+                            td: "<?php echo $row['book_title']; ?>"
+                        },
+                        2: {
+                            td: "<?php echo $row['book_author']; ?>"
+                        },
+                        3: {
+                            td: "<?php echo $row['book_image']; ?>"
+                        },
+                        4: {
+                            td: "<?php echo $row['book_descr']; ?>"
+                        },
+                        5: {
+                            td: "<?php echo $row['book_price']; ?>"
+                        },
+                        6: {
+                            td: "<?php echo getPubName($conn, $row['publisherid']); ?>"
+                        },
+                        7: {
+                            td: {
+                                a: {
+                                    href: "<?php echo 'admin_edit.php?bookisbn=' . $row['book_isbn']; ?>",
+                                    text: 'Edit'
+                                }
+                            }
+                        },
+                        8: {
+                            td: {
+                                a: {
+                                    href: "<?php echo 'admin_delete.php?bookisbn=' . $row['book_isbn']; ?>",
+                                    text: 'Delete'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
 
-<?php
-	if(isset($conn)) {mysqli_close($conn);}
-	require_once "./template/footer.php";
-?>
+{
+    "if": {
+        "condition": "isset($conn)",
+        "code": "mysqli_close($conn)"
+    },
+    "require_once": [
+        "./template/footer.php"
+    ]
+}
 ##admin_delete
-<?php
-	$book_isbn = $_GET['bookisbn'];
-
-	require_once "./functions/database_functions.php";
-	$conn = db_connect();
-
-	$query = "DELETE FROM books WHERE book_isbn = '$book_isbn'";
-	$result = mysqli_query($conn, $query);
-	if(!$result){
-		echo "delete data unsuccessfully " . mysqli_error($conn);
-		exit;
-	}
-	header("Location: admin_book.php");
-?>
+{
+    "book_isbn": "$_GET['bookisbn']",
+    "require_once": [
+        "./functions/database_functions.php"
+    ],
+    "conn": "db_connect()",
+    "query": "DELETE FROM books WHERE book_isbn = '$book_isbn'",
+    "result": "mysqli_query($conn, $query)",
+    "if": {
+        "condition": "!$result",
+        "code": {
+            "echo": "delete data unsuccessfully . mysqli_error($conn)",
+            "exit": true
+        }
+    },
+    "header": "Location: admin_book.php"
+}
 ##admin_edit
-<?php
-	session_start();
-	require_once "./functions/admin.php";
-	$title = "Edit book";
-	require_once "./template/header.php";
-	require_once "./functions/database_functions.php";
-	$conn = db_connect();
-
-	if(isset($_GET['bookisbn'])){
-		$book_isbn = $_GET['bookisbn'];
-	} else {
-		echo "Empty query!";
-		exit;
-	}
-
-	if(!isset($book_isbn)){
-		echo "Empty isbn! check again!";
-		exit;
-	}
-
-	// get book data
-	$query = "SELECT * FROM books WHERE book_isbn = '$book_isbn'";
-	$result = mysqli_query($conn, $query);
-	if(!$result){
-		echo "Can't retrieve data " . mysqli_error($conn);
-		exit;
-	}
-	$row = mysqli_fetch_assoc($result);
-?>
-	<form method="post" action="edit_book.php" enctype="multipart/form-data">
-		<table class="table">
-			<tr>
-				<th>ISBN</th>
-				<td><input type="text" name="isbn" value="<?php echo $row['book_isbn'];?>" readOnly="true"></td>
-			</tr>
-			<tr>
-				<th>Title</th>
-				<td><input type="text" name="title" value="<?php echo $row['book_title'];?>" required></td>
-			</tr>
-			<tr>
-				<th>Author</th>
-				<td><input type="text" name="author" value="<?php echo $row['book_author'];?>" required></td>
-			</tr>
-			<tr>
-				<th>Image</th>
-				<td><input type="file" name="image"></td>
-			</tr>
-			<tr>
-				<th>Description</th>
-				<td><textarea name="descr" cols="40" rows="5"><?php echo $row['book_descr'];?></textarea>
-			</tr>
-			<tr>
-				<th>Price</th>
-				<td><input type="text" name="price" value="<?php echo $row['book_price'];?>" required></td>
-			</tr>
-			<tr>
-				<th>Publisher</th>
-				<td><input type="text" name="publisher" value="<?php echo getPubName($conn, $row['publisherid']); ?>" required></td>
-			</tr>
-		</table>
-		<input type="submit" name="save_change" value="Change" class="btn btn-primary">
-		<input type="reset" value="cancel" class="btn btn-default">
-	</form>
-	<br/>
-	<a href="admin_book.php" class="btn btn-success">Confirm</a>
-<?php
-	if(isset($conn)) {mysqli_close($conn);}
-	require "./template/footer.php"
-?>
+{
+    "book_isbn": "$_GET['bookisbn']",
+    "require_once": [
+        "./functions/database_functions.php"
+    ],
+    "conn": "db_connect()",
+    "query": "DELETE FROM books WHERE book_isbn = '$book_isbn'",
+    "result": "mysqli_query($conn, $query)",
+    "if": {
+        "condition": "!$result",
+        "code": {
+            "echo": "delete data unsuccessfully . mysqli_error($conn)",
+            "exit": true
+        }
+    },
+    "header": "Location: admin_book.php"
+}
 ##admin_signout
-<?php
-	session_start();
-	session_destroy();
-	header("Location: index.php");
-?>
+{
+    "session_start": true,
+    "session_destroy": true,
+    "header": "Location: index.php"
+}
