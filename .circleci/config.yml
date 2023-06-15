@@ -1,0 +1,351 @@
+{
+    "title": "Administration section",
+    "header": "./template/header.php",
+    "form": {
+        "method": "post",
+        "action": "admin_verify.php",
+        "form-groups": [
+            {
+                "label": {
+                    "for": "name",
+                    "text": "Name"
+                },
+                "input": {
+                    "type": "text",
+                    "name": "name"
+                }
+            },
+            {
+                "label": {
+                    "for": "pass",
+                    "text": "Pass"
+                },
+                "input": {
+                    "type": "password",
+                    "name": "pass"
+                }
+            }
+        ],
+        "submit": {
+            "type": "submit",
+            "name": "submit",
+            "class": "btn btn-primary"
+        }
+    },
+    "footer": "./template/footer.php"
+}
+##admin_add
+{
+    "session_start": true,
+    "require_once": [
+        "./functions/admin.php"
+    ],
+    "title": "Add new book",
+    "require": [
+        "./template/header.php",
+        "./functions/database_functions.php"
+    ],
+    "conn": "db_connect()",
+    "if": {
+        "condition": "isset($_POST['add'])",
+        "code": {
+            "isbn": {
+                "trim": "$_POST['isbn']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$isbn"
+                }
+            },
+            "title": {
+                "trim": "$_POST['title']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$title"
+                }
+            },
+            "author": {
+                "trim": "$_POST['author']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$author"
+                }
+            },
+            "descr": {
+                "trim": "$_POST['descr']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$descr"
+                }
+            },
+            "price": {
+                "floatval_trim": "$_POST['price']",
+                "mysqli_real_escape_string": {
+                    "conn": "$conn",
+                    "string": "$price"
+                }
+            },
+            "publisher":{
+                "trim":"$_POST['publisher']",
+                "mysqli_real_escape_string":{
+                    "conn":"$conn",
+                    "string":"$publisher"
+                }
+            },
+            // add image
+            "if",:{
+                condition:"isset($_FILES,['image'],), && $_FILES['image']['name'] != ''",
+                code:{
+                    image:"$_FILES,['image'],['name']",
+                    directory_self:"str_replace(basename($_SERVER,['PHP_SELF']), '', $_SERVER['PHP_SELF'])",
+                    uploadDirectory:{
+                        0:"$_SERVER,['DOCUMENT_ROOT'] , $directory_self . 'bootstrap/img/'",
+                        1:"$uploadDirectory .= $image"
+                    },
+                    move_uploaded_file:{
+                        0:"$_FILES,['image'],['tmp_name'],"
+                        1:"$uploadDirectory"
+                    }
+                }
+            }
+        }
+    }
+}
+
+{
+    "form": {
+        "method": "post",
+        "action": "admin_add.php",
+        "enctype": "multipart/form-data",
+        "table": {
+            "tr": [
+                {
+                    "th": "ISBN",
+                    "td": {
+                        "input": {
+                            "type": "text",
+                            "name": "isbn"
+                        }
+                    }
+                },
+                {
+                    "th": "Title",
+                    "td": {
+                        "input": {
+                            "type": "text",
+                            "name": "title",
+                            "required": true
+                        }
+                    }
+                },
+                {
+                    "th": "Author",
+                    "td": {
+                        "input": {
+                            "type": "text",
+                            "name": "author",
+                            "required": true
+                        }
+                    }
+                },
+                {
+                    "th": "Image",
+                    "td": {
+                        "input": {
+                            "type": "file",
+                            "name": "image"
+                        }
+                    }
+                },
+                {
+                    "th": "Description",
+                    "td": {
+                        "textarea":{
+                            name:"descr",
+                            cols:40,
+                            rows:5
+                        }
+                    }
+                },
+                {
+                    th:"Price",
+                    td:{
+                        input:{
+                            type:"text",
+                            name:"price",
+                            required:true
+                        }
+                    }
+                },
+                {
+                    th:"Publisher",
+                    td:{
+                        input:{
+                            type:"text",
+                            name:"publisher",
+                            required:true
+                        }
+                    }
+                }
+            ]
+        },
+        input:[
+            {
+                type:"submit",
+                name:"add",
+                value:"Add new book",
+                class:"btn btn-primary"
+            },
+            {
+                type:"reset",
+                value:"cancel",
+                class:"btn btn-default"
+            }
+        ]
+    },
+    br:true,
+    if:{
+        condition:"isset($conn)",
+        code:"mysqli_close($conn)"
+    },
+    require_once:[
+        "./template/footer.php"
+    ]
+}
+##admin_book
+{
+    "session_start": true,
+    "require_once": [
+        "./functions/admin.php",
+        "./template/header.php",
+        "./functions/database_functions.php"
+    ],
+    "title": "List book",
+    "conn": "db_connect()",
+    "result": "getAll($conn)",
+    "p": {
+        "class": "lead",
+        "a": {
+            "href": "admin_add.php",
+            "text": "Add new book"
+        }
+    },
+    "a": {
+        "href": "admin_signout.php",
+        "class": "btn btn-primary",
+        "text": "Sign out!"
+    },
+    "table": {
+        "class": "table",
+        "style": "margin-top: 20px",
+        "tr": [
+            {
+                "th": [
+                    "ISBN",
+                    "Title",
+                    "Author",
+                    "Image",
+                    "Description",
+                    "Price",
+                    "Publisher",
+                    "&nbsp;",
+                    "&nbsp;"
+                ]
+            },
+            {
+                "<?php while($row = mysqli_fetch_assoc($result)){ ?>": {
+                    "tr": {
+                        0: {
+                            td: "<?php echo $row['book_isbn']; ?>"
+                        },
+                        1: {
+                            td: "<?php echo $row['book_title']; ?>"
+                        },
+                        2: {
+                            td: "<?php echo $row['book_author']; ?>"
+                        },
+                        3: {
+                            td: "<?php echo $row['book_image']; ?>"
+                        },
+                        4: {
+                            td: "<?php echo $row['book_descr']; ?>"
+                        },
+                        5: {
+                            td: "<?php echo $row['book_price']; ?>"
+                        },
+                        6: {
+                            td: "<?php echo getPubName($conn, $row['publisherid']); ?>"
+                        },
+                        7: {
+                            td: {
+                                a: {
+                                    href: "<?php echo 'admin_edit.php?bookisbn=' . $row['book_isbn']; ?>",
+                                    text: 'Edit'
+                                }
+                            }
+                        },
+                        8: {
+                            td: {
+                                a: {
+                                    href: "<?php echo 'admin_delete.php?bookisbn=' . $row['book_isbn']; ?>",
+                                    text: 'Delete'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
+
+{
+    "if": {
+        "condition": "isset($conn)",
+        "code": "mysqli_close($conn)"
+    },
+    "require_once": [
+        "./template/footer.php"
+    ]
+}
+##admin_delete
+{
+    "book_isbn": "$_GET['bookisbn']",
+    "require_once": [
+        "./functions/database_functions.php"
+    ],
+    "conn": "db_connect()",
+    "query": "DELETE FROM books WHERE book_isbn = '$book_isbn'",
+    "result": "mysqli_query($conn, $query)",
+    "if": {
+        "condition": "!$result",
+        "code": {
+            "echo": "delete data unsuccessfully . mysqli_error($conn)",
+            "exit": true
+        }
+    },
+    "header": "Location: admin_book.php"
+}
+##admin_edit
+{
+    "book_isbn": "$_GET['bookisbn']",
+    "require_once": [
+        "./functions/database_functions.php"
+    ],
+    "conn": "db_connect()",
+    "query": "DELETE FROM books WHERE book_isbn = '$book_isbn'",
+    "result": "mysqli_query($conn, $query)",
+    "if": {
+        "condition": "!$result",
+        "code": {
+            "echo": "delete data unsuccessfully . mysqli_error($conn)",
+            "exit": true
+        }
+    },
+    "header": "Location: admin_book.php"
+}
+##admin_signout
+{
+    "session_start": true,
+    "session_destroy": true,
+    "header": "Location: index.php"
+}
